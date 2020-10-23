@@ -4,8 +4,6 @@
 #include <streambuf>
 
 
-
-
 namespace Antimatter
 {
 	byte::byte() : byte(0)
@@ -19,15 +17,15 @@ namespace Antimatter
 	std::string byte::toString()
 	{
 		std::ostringstream stringStream;
-		stringStream << (int)m_value;
+		stringStream << static_cast<int>(m_value);
 		std::string copyOfStr = stringStream.str();
 
 
 		return copyOfStr;
 	}
-	
+
 	std::ostream& operator<<(std::ostream& strm, const byte& a)
 	{
-		return strm << "(" << (int)a.m_value << ")";
+		return strm << "(" << static_cast<int>(a.m_value) << ")";
 	}
 }

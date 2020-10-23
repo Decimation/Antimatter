@@ -4,8 +4,8 @@
 #include <iostream>
 
 
-
 #include "byte.h"
+#include "Collections.h"
 #include "Console.h"
 #include "Memory.h"
 #include "Object.h"
@@ -14,22 +14,20 @@ using namespace std;
 
 using namespace Antimatter;
 
+
 int main() noexcept
 {
 	std::cout << "Hello World!\n";
 
 	cout << _MSVC_LANG << endl;
 
-	Console::Write("foo %d\n",1);
+
+	auto* p = Memory::Alloc<int>(4);
 
 
-	Object o = Object();
+	cout << Memory::Size(p) << endl;
 
-	cout << o.toString() << endl;;
-
-	Antimatter::byte b =Antimatter:: byte(1);
-
-	cout << b.toString();
+	//Memory::Free(p);
 
 	return 0;
 }

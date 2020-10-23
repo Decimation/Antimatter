@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="byte.cpp" />
+    <ClCompile Include="Collections.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -149,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte.h" />
+    <ClInclude Include="Collections.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Memory.h" />

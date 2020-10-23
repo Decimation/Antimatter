@@ -30,6 +30,9 @@
     <ClCompile Include="byte.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Collections.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Memory.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="byte.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collections.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
