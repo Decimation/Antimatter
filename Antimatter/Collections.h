@@ -16,7 +16,7 @@ namespace Antimatter
 		int : Represents the index of element in vector if its found else -1
 		*/
 		template <typename T>
-		static std::pair<bool, int> findInVector(const std::vector<T>& vecOfElements, const T& element)
+		static std::pair<bool, int> FindInVector(const std::vector<T>& vecOfElements, const T& element)
 		{
 			std::pair<bool, int> result;
 			// Find given element in vector

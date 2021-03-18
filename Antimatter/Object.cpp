@@ -1,13 +1,12 @@
 #include "Object.h"
+#include "Common.h"
 
 namespace Antimatter
 {
-	std::string Object::toString()
+	std::string Object::ToString()
 	{
-		char buf[128];
-		sprintf(buf, "%p", (void*) this);
+		QuickFormat(buf, "%p", static_cast<void*>(this));
 
 		return buf;
 	}
 }
-

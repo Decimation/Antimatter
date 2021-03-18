@@ -1,3 +1,4 @@
+// ReSharper disable CppInconsistentNaming
 #pragma once
 #include <ostream>
 
@@ -5,7 +6,7 @@
 
 namespace Antimatter
 {
-	class byte : Object
+	class byte final : Object
 	{
 	private:
 		unsigned char m_value;
@@ -16,7 +17,7 @@ namespace Antimatter
 
 		byte(unsigned char);
 
-		std::string toString() override;
+		std::string ToString() override;
 		
 	};
 }

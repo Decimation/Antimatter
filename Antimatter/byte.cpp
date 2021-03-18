@@ -10,22 +10,22 @@ namespace Antimatter
 	{
 	}
 
-	byte::byte(unsigned char value) : m_value(value)
+	byte::byte(const unsigned char value) : m_value(value)
 	{
 	}
 
-	std::string byte::toString()
+	std::string byte::ToString()
 	{
 		std::ostringstream stringStream;
 		stringStream << static_cast<int>(m_value);
-		std::string copyOfStr = stringStream.str();
+		auto copyOfStr = stringStream.str();
 
 
 		return copyOfStr;
 	}
 
-	std::ostream& operator<<(std::ostream& strm, const byte& a)
+	std::ostream& operator<<(std::ostream& stream, const byte& a)
 	{
-		return strm << "(" << static_cast<int>(a.m_value) << ")";
+		return stream << "(" << static_cast<int>(a.m_value) << ")";
 	}
 }

@@ -53,5 +53,11 @@
     <ClInclude Include="Collections.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Strings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SigScanner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

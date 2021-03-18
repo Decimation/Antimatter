@@ -1,16 +1,23 @@
+// ReSharper disable CppClangTidyReadabilityRedundantDeclaration
+// ReSharper disable CppClangTidyClangDiagnosticMicrosoftExceptionSpec
+// ReSharper disable CppClangTidyClangDiagnosticImplicitExceptionSpecMismatch
+
 #pragma once
 
 #include <memory>
 #include <vector>
+#include <Windows.h>
+
+#include "Common.h"
 
 namespace Antimatter
 {
 	class Memory
 	{
-	public:
+	private:
 		static int count;
 	public:
-		static bool Is64Bit();
+		
 
 		static void* Alloc(size_t);
 
@@ -22,12 +29,17 @@ namespace Antimatter
 		static T* Alloc(const size_t elemCnt)
 		{
 			const auto cb = elemCnt * sizeof(T);
-			auto v = Alloc(cb);
+			auto* v = Alloc(cb);
 
 			return static_cast<T*>(v);
 		}
 	};
 }
 
-void* operator new(size_t);
-void operator delete(void*, size_t);
+inline bool Is64Bit()
+{
+	return sizeof(void*) == sizeof(llong);
+}
+
+void* operator new(std::size_t) noexcept;
+void operator delete(void*);

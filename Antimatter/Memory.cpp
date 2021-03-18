@@ -1,7 +1,9 @@
+// ReSharper disable CppParameterNamesMismatch
 #include "Memory.h"
 #include "Common.h"
 #include "Windows.h"
 #include "debugapi.h"
+
 using namespace std;
 
 int Antimatter::Memory::count = 0;
@@ -10,10 +12,12 @@ namespace Antimatter
 {
 	void* Memory::Alloc(const size_t cb)
 	{
-		void* p = malloc(cb);
+		auto* const p = malloc(cb);
 
-		memset(p, 0, cb);
-
+		if (p) {
+			memset(p, 0, cb);
+		}
+		
 		Memory::count++;
 
 		//printf("Alloc %d\n", cb);
@@ -40,18 +44,16 @@ namespace Antimatter
 		return _msize(v);
 	}
 
-	bool Memory::Is64Bit()
-	{
-		return sizeof(void*) == sizeof(llong);
-	}
+	
 }
 
-void* operator new(size_t cb)
+
+void* operator new(std::size_t cb) noexcept
 {
 	return Antimatter::Memory::Alloc(cb);
 }
 
-void operator delete(void* p, size_t s)
+void operator delete(void* p)
 {
 	Antimatter::Memory::Free(p);
 }
