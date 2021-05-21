@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include <TlHelp32.h>
 
+#include "Common.h"
 #include "Strings.h"
 
 
@@ -21,7 +22,7 @@ struct Module
 	DWORD dwBase, dwSize;
 };
 
-class SignatureScanner
+class SigScanner
 {
 public:
 	Module TargetModule; // Hold target module
@@ -44,7 +45,7 @@ public:
 			}
 		while (Process32Next(handle, &entry));
 
-		return(HANDLE) false;
+		return nullptr;
 	}
 
 	// For getting information about the executing module
@@ -55,37 +56,37 @@ public:
 		mEntry.dwSize = sizeof(mEntry);
 
 		do {
-			if (!strcmp(wchar_to_char(mEntry.szModule), (LPSTR)moduleName)) {
+			if (!strcmp(wchar_to_char(mEntry.szModule), moduleName)) {
 				CloseHandle(hmodule);
 
-				TargetModule = {(DWORD)mEntry.hModule, mEntry.modBaseSize};
+				TargetModule = {reinterpret_cast<DWORD>(mEntry.hModule), mEntry.modBaseSize};
 				return TargetModule;
 			}
 		}
 		while (Module32Next(hmodule, &mEntry));
 
-		Module mod = {(DWORD)false, (DWORD)false};
+		const Module mod = {static_cast<DWORD>(false), static_cast<DWORD>(false)};
 		return mod;
 	}
 
 	// Basic WPM wrapper, easier to use.
 	template <typename T>
-	bool WriteMemory(DWORD address, T value)
+	bool WriteMemory(void* address, T value)
 	{
-		return WriteProcessMemory(TargetProcess, (LPVOID)address, &value, sizeof(T), 0);
+		return WriteProcessMemory(TargetProcess, address, &value, sizeof(T), nullptr);
 	}
 
 	// Basic RPM wrapper, easier to use.
 	template <typename T>
-	T ReadMemory(DWORD address)
+	T ReadMemory(void* address)
 	{
 		T value{};
-		ReadProcessMemory(TargetProcess, (LPCVOID)address, &value, sizeof(T), NULL);
+		ReadProcessMemory(TargetProcess, address, &value, sizeof(T), nullptr);
 		return value;
 	}
 
 	// for comparing a region in memory, needed in finding a signature
-	bool MemoryCompare(const BYTE* bData, const BYTE* bMask, const char* szMask)
+	static bool MemoryCompare(const BYTE* bData, const BYTE* bMask, const char* szMask)
 	{
 		for (; *szMask; ++szMask, ++bData, ++bMask) {
 			if (*szMask == 'x' && *bData != *bMask) {
@@ -96,15 +97,15 @@ public:
 	}
 
 	// for finding a signature/pattern in memory of another process
-	DWORD FindSignature(DWORD start, DWORD size, const char* sig, const char* mask)
+	BYTE* FindSignature(BYTE* start, const DWORD size, const char* sig, const char* mask)
 	{
 		BYTE* data = new BYTE[size];
 		SIZE_T bytesRead;
 
-		ReadProcessMemory(TargetProcess, (LPVOID)start, data, size, &bytesRead);
+		ReadProcessMemory(TargetProcess, start, data, size, &bytesRead);
 
 		for (DWORD i = 0; i < size; i++) {
-			if (MemoryCompare((const BYTE*)(data + i), (const BYTE*)sig, mask)) {
+			if (MemoryCompare(data + i, (const BYTE*)sig, mask)) {
 				return start + i;
 			}
 		}

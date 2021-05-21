@@ -5,7 +5,7 @@
 #pragma once
 
 
-
+#include <windef.h>
 #include <sal.h>
 
 /*
@@ -18,9 +18,13 @@ typedef long long llong;
  */
 typedef const char* CString;
 
+
+/*
 #define xstr(s) str(s)
 #define str(s) #s
 #define glue(a,b) a##b
+ */
+
 
 #define FORMAT_STR __format_string
 

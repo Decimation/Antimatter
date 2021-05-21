@@ -17,8 +17,8 @@ namespace Antimatter
 		if (p) {
 			memset(p, 0, cb);
 		}
-		
-		Memory::count++;
+
+		count++;
 
 		//printf("Alloc %d\n", cb);
 

@@ -19,15 +19,15 @@ using namespace Antimatter;
 #include <windows.h>
 #include <stdio.h>
 #include <dbghelp.h>
-#pragma comment(lib , "dbghelp.lib")
+#pragma comment(lib, "dbghelp.lib")
 
 HANDLE hProcess;
 
-BOOL CALLBACK EnumSymProc(PSYMBOL_INFO pSymInfo, ULONG, PVOID UserContext)
+BOOL CALLBACK EnumSymProc(PSYMBOL_INFO pSymInfo, ULONG, PVOID userContext)
 {
-	size_t maxcmplen = strlen((PCHAR)UserContext);
+	size_t maxcmplen = strlen((PCHAR)userContext);
 	if (maxcmplen == pSymInfo->NameLen) {
-		if ((strncmp(pSymInfo->Name, (PCHAR)UserContext, pSymInfo->NameLen)) == 0) {
+		if ((strncmp(pSymInfo->Name, (PCHAR)userContext, pSymInfo->NameLen)) == 0) {
 			TI_FINDCHILDREN_PARAMS childs = {0};
 			SymGetTypeInfo(hProcess, pSymInfo->ModBase, pSymInfo->TypeIndex,
 			               TI_GET_CHILDRENCOUNT, &childs.Count);
@@ -41,8 +41,7 @@ BOOL CALLBACK EnumSymProc(PSYMBOL_INFO pSymInfo, ULONG, PVOID UserContext)
 
 void find(const char* pdb, char* ctcx)
 {
-	hProcess = GetCurrentProcess();
-	SymInitialize(hProcess, NULL, FALSE);
+	
 	DWORD64 BaseOfDll = SymLoadModuleEx(hProcess, NULL, pdb, NULL,
 		0x400000, 0x20000, NULL, 0);
 	SymEnumSymbols(hProcess, BaseOfDll, "*!*", EnumSymProc, ctcx);
@@ -65,9 +64,13 @@ int main() noexcept
 	auto sig = s.FindSignature(m.dwBase, m.dwSize, "\x02\x16\x7D\x62\x0C\x00\x04\x1F\x0C", "xxxxxxxxx");
 
 	printf("%x\n", sig);*/
-
+	hProcess = GetCurrentProcess();
+	SymInitialize(hProcess, NULL, FALSE);
+	char buf[256];
+	printf("%d %s", SymGetSearchPath(GetCurrentProcess(), buf, sizeof buf),buf);
 	find("C:\\Users\\Deci\\Desktop\\coreclr.pdb", (char*)"MethodDesc::Reset");
-	
+
+
 	return 0;
 }
 
