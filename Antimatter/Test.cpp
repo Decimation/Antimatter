@@ -41,14 +41,24 @@ BOOL CALLBACK EnumSymProc(PSYMBOL_INFO pSymInfo, ULONG, PVOID userContext)
 
 void find(const char* pdb, char* ctcx)
 {
-	
 	DWORD64 BaseOfDll = SymLoadModuleEx(hProcess, NULL, pdb, NULL,
 		0x400000, 0x20000, NULL, 0);
+	
 	SymEnumSymbols(hProcess, BaseOfDll, "*!*", EnumSymProc, ctcx);
 	SymEnumTypes(hProcess, BaseOfDll, EnumSymProc, ctcx);
 	SymCleanup(hProcess);
 }
+#include <numeric>
+#include <vector>
+#include <iostream>
+#include <concepts>
 
+template <typename T>
+requires std::integral<T> || std::floating_point<T>
+constexpr double Average(std::vector<T> const& vec) {
+	const double sum = std::accumulate(vec.begin(), vec.end(), 0.0);
+	return sum / vec.size();
+}
 int main() noexcept
 {
 	/*_ASSERT(Contains(xstr(_MSVC_LANG),"2017"));
@@ -68,9 +78,14 @@ int main() noexcept
 	SymInitialize(hProcess, NULL, FALSE);
 	char buf[256];
 	printf("%d %s", SymGetSearchPath(GetCurrentProcess(), buf, sizeof buf),buf);
-	find("C:\\Users\\Deci\\Desktop\\coreclr.pdb", (char*)"MethodDesc::Reset");
-
-
+	find(R"(C:\Symbols\coreclr.pdb)", (char*)"MethodDesc::Reset");
+	char* d = new char[] {"Hello"};
+	cout << __cplusplus<<std::endl;
+	cout << _MSVC_LANG << std::endl;
+	cout << _MSC_VER << std::endl;
+	cout << _MSC_FULL_VER << std::endl;
+	std::vector ints{ 1, 2, 3, 4, 5 };
+	std::cout << Average(ints) << '\n';
 	return 0;
 }
 

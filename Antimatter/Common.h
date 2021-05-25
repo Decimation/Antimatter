@@ -5,7 +5,6 @@
 #pragma once
 
 
-#include <windef.h>
 #include <sal.h>
 
 /*
