@@ -12,13 +12,19 @@
 #include "SigScanner.h"
 #include "Strings.h"
 
-using namespace std;
 
-using namespace Antimatter;
 #include <numeric>
 #include <vector>
 #include <iostream>
 #include <concepts>
+
+
+#include <boost/any.hpp>
+#include <boost/format.hpp>
+
+
+using namespace std;
+using namespace Antimatter;
 
 template <typename T> requires std::integral<T> || std::floating_point<T>
 constexpr double Average(std::vector<T> const& vec)
@@ -26,9 +32,6 @@ constexpr double Average(std::vector<T> const& vec)
 	const double sum = std::accumulate(vec.begin(), vec.end(), 0.0);
 	return sum / vec.size();
 }
-
-#include <boost/format.hpp>
-#include <boost/any.hpp>
 
 void ver()
 {
@@ -41,10 +44,7 @@ int main() noexcept
 	printf("%s\n", a.type().name());
 
 
-	
-
-	std::vector ints{1, 2, 3, 4, 5};
-	std::cout << Average(ints) << '\n';
+	ver();
 
 	return 0;
 }
