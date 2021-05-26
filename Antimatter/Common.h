@@ -29,7 +29,9 @@ typedef const char* CString;
 
 #define QuickFormat(id,fmt, ...) \
 	char id[128]; \
-	sprintf(buf, fmt, __VA_ARGS__)
+	sprintf(id, fmt, __VA_ARGS__)
 
 template <typename T, size_t N>
-constexpr size_t ArraySize(const T(&)[N]) { return N; }
+constexpr size_t ArraySize(const T (&)[N]) { return N; }
+
+//https://github.com/swansontec/map-macro
